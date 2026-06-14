@@ -1,7 +1,13 @@
-# Hyperliquid outcome-markets crawler
+# Hyperliquid markets crawler
 
-Crawls outcome (prediction) market data from the Hyperliquid info API and stores
-it in Postgres — latest state plus an append-only snapshot history.
+Crawls live market data from the Hyperliquid info API and stores it in Postgres:
+latest state plus an append-only snapshot history.
+
+By default it pulls Hyperliquid's **live perpetual markets** (`metaAndAssetCtxs`,
+~180 markets with mark price and 24h volume) — Hyperliquid's public API does not
+expose prediction/outcome markets, so this crawls the real markets that exist. A
+generic outcome-market parser (`parse_markets`) is also included for venues that
+do expose that shape.
 
 > **Software Engineering** example for [opensource.assinnata.com](https://opensource.assinnata.com).
 
@@ -35,8 +41,9 @@ make up                       # LocalStack 4.14 + Postgres 16
 make test-hyperliquid-crawler
 ```
 
-14 tests: payload parsing/validation, upsert idempotency, snapshot history, and
-an end-to-end crawl through a fake source.
+18 tests: payload parsing/validation (both shapes), upsert idempotency,
+snapshot history, an end-to-end crawl through a fake source, and a **live test**
+that hits `api.hyperliquid.xyz` and stores real markets (skips if offline).
 
 ## Run it for real
 

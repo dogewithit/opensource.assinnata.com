@@ -1,6 +1,8 @@
 # opensource.assinnata.com
 
-An open-source site showcasing the tools [Matteo Assinnata](https://linkedin.com/in/assinnata)
+**Live at [opensource.assinnata.com](https://opensource.assinnata.com)** (Cloudflare Pages).
+
+An open source site showcasing the tools [Matteo Assinnata](https://linkedin.com/in/assinnata)
 — Trading Infrastructure Engineer — uses day-to-day, **with a tested code example
 behind each one**. An example that doesn't pass its tests locally (against
 LocalStack 4.14 + Postgres) is rejected and gets no link. See [ROADMAP.md](ROADMAP.md).

@@ -1,11 +1,11 @@
 /**
- * Tools catalogue — the single source of truth for the tool grid.
+ * Tools catalogue, the single source of truth for the tool grid.
  *
  * Grounded in Matteo Assinnata's curriculum (Trading Infrastructure Engineer).
  * Every tool that ships an example links to a tested project under examples/.
- * Tools without a locally-testable example are marked `rejected` (see ROADMAP).
+ * Tools without a locally testable example are marked rejected (see ROADMAP).
  *
- * proficiency: 1–5  (1 = familiar, 3 = working knowledge, 5 = deep / production-owner)
+ * proficiency: 1 to 5 (1 = familiar, 3 = working knowledge, 5 = production owner)
  */
 
 export const GITHUB_BASE =
@@ -14,7 +14,7 @@ export const GITHUB_BASE =
 export type Proficiency = 1 | 2 | 3 | 4 | 5;
 
 export interface ExampleRef {
-  /** repo-relative path, e.g. examples/aws-localstack */
+  /** repo relative path, e.g. examples/aws-localstack */
   path: string;
   /** short label for the link */
   label?: string;
@@ -22,14 +22,14 @@ export interface ExampleRef {
 
 export interface Tool {
   name: string;
-  /** short, CV-grounded note on how it's actually used */
+  /** short note on how I actually use it */
   note: string;
   proficiency: Proficiency;
   /** optional homepage for the tool */
   url?: string;
   /** a tested code example in this repo */
   example?: ExampleRef;
-  /** set when there is no locally-tested example (honours tested-or-rejected) */
+  /** set when there is no locally tested example (honours tested or rejected) */
   rejected?: string;
 }
 
@@ -53,145 +53,145 @@ export function githubUrl(path: string): string {
 }
 
 /**
- * Software Engineering — flagship, fully-tested code examples.
+ * Software Engineering, my flagship code examples.
  */
 export const softwareCategories: Category[] = [
   {
     id: 'software-engineering',
     title: 'Software Engineering',
-    blurb: 'Production-shaped code examples — each one tested before it ships.',
+    blurb: 'Real code I have written. Every example here is tested before it ships.',
     tools: [
       {
-        name: 'Hyperliquid Outcome-Markets Crawler',
-        note: 'Crawls Hyperliquid outcome-market data into Postgres: idempotent latest-state upserts + append-only snapshot history. 14 tests.',
+        name: 'Hyperliquid Markets Crawler',
+        note: 'I crawl the live Hyperliquid markets into Postgres. It keeps the latest state with idempotent upserts and a snapshot history that only ever grows. 18 tests, one of which hits the real API.',
         proficiency: 5,
         url: 'https://hyperliquid.gitbook.io/hyperliquid-docs',
-        example: { path: 'examples/hyperliquid-crawler', label: 'Python · Postgres' },
+        example: { path: 'examples/hyperliquid-crawler', label: 'Python and Postgres' },
       },
     ],
   },
 ];
 
 /**
- * Infrastructure & Observability — the stack, with tested examples where one
- * can be validated locally.
+ * Infrastructure and Observability, the stack, with a tested example wherever
+ * one can be validated locally.
  */
 export const infraCategories: Category[] = [
   {
     id: 'cloud-compute',
-    title: 'Cloud & Compute',
-    blurb: 'Where trading systems run, and how they scale under live load.',
+    title: 'Cloud and Compute',
+    blurb: 'Where trading systems run, and how they scale while the market is live.',
     tools: [
       {
         name: 'AWS',
-        note: 'Primary cloud across roles — networking, IAM, and cost optimization for trading infrastructure.',
+        note: 'My main cloud across every role. Networking, IAM, and keeping the bill sane for trading infrastructure.',
         proficiency: 5,
         url: 'https://aws.amazon.com/',
-        example: { path: 'examples/aws-localstack', label: 'S3 + DynamoDB · LocalStack' },
+        example: { path: 'examples/aws-localstack', label: 'S3 and DynamoDB on LocalStack' },
       },
       {
         name: 'Kubernetes',
-        note: 'Orchestrates trading and venture-builder workloads; ran EKS in production under live trading.',
+        note: 'Runs the trading and venture builder workloads. I ran EKS in production while trades were live.',
         proficiency: 5,
         url: 'https://kubernetes.io/',
-        rejected: 'No reproducible local test on LocalStack community — needs a kind/real cluster.',
+        rejected: 'I cannot reproduce this faithfully on LocalStack, it needs a real cluster, so there is no tested example yet.',
       },
       {
         name: 'Amazon EKS',
-        note: 'Designed EKS Fargate infrastructure across an entire venture-builder portfolio.',
+        note: 'I designed the EKS and Fargate setup across a whole venture builder portfolio.',
         proficiency: 4,
         url: 'https://aws.amazon.com/eks/',
-        rejected: 'EKS is not faithfully reproducible on LocalStack community.',
+        rejected: 'EKS does not reproduce faithfully on LocalStack, so there is no tested example yet.',
       },
       {
         name: 'AWS Fargate',
-        note: 'Serverless container compute — removed node management from the EKS platform.',
+        note: 'Serverless containers. It took node management off my plate on the EKS platform.',
         proficiency: 4,
         url: 'https://aws.amazon.com/fargate/',
-        rejected: 'No meaningful local test harness without a real cluster.',
+        rejected: 'There is no honest way to test this locally without a real cluster.',
       },
     ],
   },
   {
     id: 'iac',
     title: 'Infrastructure as Code',
-    blurb: 'Reproducible, reviewable infrastructure — nothing held up by hand.',
+    blurb: 'Infrastructure I can reproduce and review. Nothing is held up by hand.',
     tools: [
       {
         name: 'Terraform',
-        note: 'Infrastructure as code for cloud platforms; provisioned and versioned production infra.',
+        note: 'How I describe and version cloud infrastructure. I have used it to provision real production infra.',
         proficiency: 4,
         url: 'https://www.terraform.io/',
-        example: { path: 'examples/terraform-localstack', label: 'tflocal · apply + assert' },
+        example: { path: 'examples/terraform-localstack', label: 'tflocal, apply then assert' },
       },
     ],
   },
   {
     id: 'cicd',
-    title: 'CI/CD & Automation',
-    blurb: 'A solid SDLC so changes ship safely and often.',
+    title: 'CI/CD and Automation',
+    blurb: 'A solid lifecycle so changes ship safely and often.',
     tools: [
       {
         name: 'CI/CD Pipelines',
-        note: 'Automated CI/CD with a solid SDLC; here, GitHub Actions runs every example test suite.',
+        note: 'I automate the whole path from commit to production. Here, GitHub Actions runs every example test suite on each push.',
         proficiency: 4,
         url: 'https://docs.github.com/actions',
         example: { path: '.github/workflows/ci.yml', label: 'GitHub Actions workflow' },
       },
       {
-        name: 'Feature-branch Environments',
-        note: 'Ephemeral per-branch environments so every change is reviewable in isolation.',
+        name: 'Feature branch environments',
+        note: 'A throwaway environment for every branch, so every change can be reviewed on its own.',
         proficiency: 4,
-        rejected: 'An operational practice — demonstrated via CI, no standalone unit test.',
+        rejected: 'This is a way of working rather than a library, so there is no standalone test. You can see it in the CI setup.',
       },
     ],
   },
   {
     id: 'observability',
     title: 'Observability',
-    blurb: '360° monitoring as code — you cannot run what you cannot see.',
+    blurb: 'Monitoring as code, because you cannot run what you cannot see.',
     tools: [
       {
         name: 'OpenTelemetry',
-        note: 'Vendor-neutral traces, metrics, and logs instrumented across services.',
+        note: 'Traces, metrics, and logs that are not tied to any vendor, instrumented across the services.',
         proficiency: 4,
         url: 'https://opentelemetry.io/',
-        example: { path: 'examples/opentelemetry-tracing', label: 'spans · in-memory exporter' },
+        example: { path: 'examples/opentelemetry-tracing', label: 'spans via an in memory exporter' },
       },
       {
         name: 'Prometheus',
-        note: 'Metrics collection and alerting for production trading systems.',
+        note: 'Collects the metrics and drives the alerts for production trading systems.',
         proficiency: 4,
         url: 'https://prometheus.io/',
-        example: { path: 'examples/prometheus-metrics', label: 'exposition format' },
+        example: { path: 'examples/prometheus-metrics', label: 'the exposition format' },
       },
       {
         name: 'Grafana',
-        note: 'Dashboards and visualization for live system and trading health.',
+        note: 'Dashboards for the health of the systems and the trading on top of them.',
         proficiency: 4,
         url: 'https://grafana.com/',
-        rejected: 'Dashboards are JSON config — no meaningful isolated unit test yet.',
+        rejected: 'Dashboards are just JSON config, so there is nothing meaningful to unit test on its own yet.',
       },
     ],
   },
   {
     id: 'finops',
-    title: 'FinOps & Cost',
+    title: 'FinOps and Cost',
     blurb: 'Reliability and efficiency are the same discipline.',
     tools: [
       {
         name: 'AWS Budgets',
-        note: 'Budgeting guardrails to keep cloud spend predictable.',
+        note: 'Guardrails that keep cloud spend predictable.',
         proficiency: 3,
         url: 'https://aws.amazon.com/aws-cost-management/aws-budgets/',
-        rejected: 'LocalStack Pro-only API — no community local test.',
+        rejected: 'This API only lives in LocalStack Pro, so I cannot test it on the free tier.',
       },
       {
         name: 'Cost Anomaly Detection',
-        note: 'Cut cloud cost via anomaly analysis across a multi-project portfolio.',
+        note: 'I used anomaly analysis to cut cloud cost across a portfolio of projects.',
         proficiency: 3,
         url: 'https://aws.amazon.com/aws-cost-management/aws-cost-anomaly-detection/',
-        rejected: 'LocalStack Pro-only API — no community local test.',
+        rejected: 'This API only lives in LocalStack Pro, so I cannot test it on the free tier.',
       },
     ],
   },

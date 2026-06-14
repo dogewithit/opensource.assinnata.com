@@ -50,6 +50,12 @@ class FakeSource(MarketSource):
         return list(self._markets)
 
 
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers", "live: hits the real Hyperliquid API (skips if offline)"
+    )
+
+
 @pytest.fixture
 def sample_payload() -> dict:
     return SAMPLE_PAYLOAD

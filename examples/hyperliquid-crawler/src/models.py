@@ -75,3 +75,48 @@ def parse_markets(payload: dict) -> list[OutcomeMarket]:
                 )
             )
     return results
+
+
+def parse_perp_markets(payload: list) -> list[OutcomeMarket]:
+    """Parse the real Hyperliquid ``metaAndAssetCtxs`` response.
+
+    The response is a two element list: the first holds the market universe,
+    the second holds a parallel list of market contexts (prices, volume). We map
+    each live perpetual market into one row with outcome ``PERP``::
+
+        [
+          {"universe": [{"name": "BTC", ...}, ...]},
+          [{"markPx": "64060.0", "dayNtlVlm": "1358072735.6", ...}, ...]
+        ]
+
+    Delisted markets and markets without a mark price are skipped.
+    """
+    if not (isinstance(payload, list) and len(payload) == 2):
+        raise ValueError("expected a two element metaAndAssetCtxs response")
+
+    meta, contexts = payload
+    universe = meta.get("universe") if isinstance(meta, dict) else None
+    if not isinstance(universe, list) or not isinstance(contexts, list):
+        raise ValueError("malformed metaAndAssetCtxs response")
+    if len(universe) != len(contexts):
+        raise ValueError("universe and context lists must be the same length")
+
+    results: list[OutcomeMarket] = []
+    for market, ctx in zip(universe, contexts):
+        if market.get("isDelisted"):
+            continue
+        mark = ctx.get("markPx")
+        if mark is None:
+            continue
+        name = str(market["name"])
+        vol = ctx.get("dayNtlVlm")
+        results.append(
+            OutcomeMarket(
+                market_id=name,
+                question=f"{name} perpetual",
+                outcome="PERP",
+                price=_to_decimal(mark),
+                volume_24h=_to_decimal(vol) if vol is not None else None,
+            )
+        )
+    return results

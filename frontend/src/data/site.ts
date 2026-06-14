@@ -5,9 +5,9 @@ export const profile = {
   title: 'Trading Infrastructure Engineer',
   location: 'Zürich, Switzerland',
   tagline:
-    'I run the infrastructure trading depends on — and I understand the trading itself.',
+    'I run the infrastructure that trading depends on, and I understand the trading itself.',
   summary:
-    'Over nine years across regulated crypto, banking and ETP issuers, building and running systems that stay up under live trading without anyone holding them up.',
+    'Over nine years across regulated crypto, banking and ETP issuers, I build and run the systems that stay up while the market is live, without anyone holding them up by hand.',
   values: ['Efficiency', 'Reliability', 'Observability'],
   links: {
     email: 'matteo@assinnata.com',

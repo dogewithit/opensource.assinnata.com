@@ -11,7 +11,7 @@ const exampleCount = allCategories
   .filter((t) => t.example).length;
 ---
 
-<Layout title={`${profile.name} — Tools & Infrastructure`}>
+<Layout title={`${profile.name} · Tools and Infrastructure`}>
   <header class="hero">
     <div class="hero-inner">
       <p class="eyebrow">{profile.title} · {profile.location}</p>
@@ -34,21 +34,23 @@ const exampleCount = allCategories
     <div class="intro">
       <h2 class="section-kicker">Software Engineering</h2>
       <p class="intro-text">
-        Flagship code examples — each one is a real, tested project. {exampleCount}
-        of the tools below link to a working example validated locally against
-        LocalStack&nbsp;4.14 and Postgres; anything without a passing test is
-        marked <strong>no tested example</strong> rather than faked.
+        These are real projects I have written, and every one is tested.
+        {exampleCount} of the tools below link to a working example that I
+        validate locally against LocalStack&nbsp;4.14 and Postgres. Anything
+        without a passing test is marked <strong>no tested example</strong>
+        rather than faked.
       </p>
     </div>
 
     {softwareCategories.map((category) => <CategorySection category={category} />)}
 
     <div class="intro intro-divider">
-      <h2 class="section-kicker">Infrastructure &amp; Observability</h2>
+      <h2 class="section-kicker">Infrastructure and Observability</h2>
       <p class="intro-text">
-        The {toolCount} tools I actually reach for to build and run trading
-        infrastructure — grounded in real production work, not a wishlist.
-        Proficiency and a tested example are shown per tool where one exists.
+        These are the {toolCount} tools I actually reach for to build and run
+        trading infrastructure. They come from real production work, not a
+        wishlist. Where a tool has a tested example you will find it on the card,
+        along with how deep I go.
       </p>
     </div>
 
