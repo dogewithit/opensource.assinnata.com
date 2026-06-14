@@ -1,6 +1,6 @@
 # opensource.assinnata.com
 
-**Live at [opensource.assinnata.com](https://opensource.assinnata.com)** (Cloudflare Pages).
+**Live at [assinnata.com](https://assinnata.com)** (Cloudflare Pages, auto-deployed on every green push to main).
 
 An open source site showcasing the tools [Matteo Assinnata](https://linkedin.com/in/assinnata)
 — Trading Infrastructure Engineer — uses day-to-day, **with a tested code example
