@@ -1,5 +1,7 @@
 # opensource.assinnata.com
 
+[![CI](https://github.com/dogewithit/opensource.assinnata.com/actions/workflows/ci.yml/badge.svg)](https://github.com/dogewithit/opensource.assinnata.com/actions/workflows/ci.yml)
+
 **Live at [assinnata.com](https://assinnata.com)** (Cloudflare Pages, auto-deployed on every green push to main).
 
 An open source site showcasing the tools [Matteo Assinnata](https://linkedin.com/in/assinnata),
