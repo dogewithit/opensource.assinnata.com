@@ -29,7 +29,16 @@ def store():
     except Exception as exc:  # pragma: no cover - infra not up
         pytest.skip(f"LocalStack not reachable (run `make up`): {exc}")
 
-    # clean slate
-    for mid in s.list_ids():
-        s.ddb.delete_item(TableName=s.table, Key={"market_id": {"S": mid}})
-    yield s
+    def _clear():
+        # empty both stores so each test starts and ends clean
+        objects = s.s3.list_objects_v2(Bucket=s.bucket, Prefix="markets/")
+        for obj in objects.get("Contents", []):
+            s.s3.delete_object(Bucket=s.bucket, Key=obj["Key"])
+        for mid in s.list_ids():
+            s.ddb.delete_item(TableName=s.table, Key={"market_id": {"S": mid}})
+
+    _clear()
+    try:
+        yield s
+    finally:
+        _clear()

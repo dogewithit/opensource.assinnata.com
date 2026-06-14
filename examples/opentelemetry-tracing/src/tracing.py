@@ -18,7 +18,12 @@ def execute_trade(order: dict) -> dict:
     """
     tracer = trace.get_tracer("oss.example.trading")
     with tracer.start_as_current_span("execute_trade") as span:
-        span.set_attribute("trade.market_id", str(order.get("market_id", "")))
+        market_id = order.get("market_id")
+        if not market_id:
+            span.set_status(Status(StatusCode.ERROR, "market_id is required"))
+            raise ValueError("market_id is required")
+
+        span.set_attribute("trade.market_id", str(market_id))
         span.set_attribute("trade.side", str(order.get("side", "")))
 
         qty = order.get("qty", 0)
@@ -34,4 +39,4 @@ def execute_trade(order: dict) -> dict:
         notional = qty * price
         span.set_attribute("trade.notional", notional)
         span.set_status(Status(StatusCode.OK))
-        return {"market_id": order["market_id"], "notional": notional}
+        return {"market_id": market_id, "notional": notional}

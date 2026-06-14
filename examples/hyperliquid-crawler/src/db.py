@@ -42,8 +42,12 @@ class MarketRepository:
         """Apply schema.sql (idempotent)."""
         sql = SCHEMA_PATH.read_text(encoding="utf-8")
         cur = self.conn.cursor()
-        cur.execute(sql)
-        self.conn.commit()
+        try:
+            cur.execute(sql)
+            self.conn.commit()
+        except Exception:
+            self.conn.rollback()
+            raise
 
     def upsert_markets(self, markets: list[OutcomeMarket]) -> int:
         """Upsert latest state and append a snapshot for each row.
@@ -52,29 +56,34 @@ class MarketRepository:
         re-running updates price/volume rather than duplicating.
         """
         cur = self.conn.cursor()
-        for m in markets:
-            cur.execute(
-                """
-                INSERT INTO markets
-                    (market_id, outcome, question, price, volume_24h, updated_at)
-                VALUES (%s, %s, %s, %s, %s, now())
-                ON CONFLICT (market_id, outcome) DO UPDATE SET
-                    question   = EXCLUDED.question,
-                    price      = EXCLUDED.price,
-                    volume_24h = EXCLUDED.volume_24h,
-                    updated_at = now()
-                """,
-                (m.market_id, m.outcome, m.question, m.price, m.volume_24h),
-            )
-            cur.execute(
-                """
-                INSERT INTO market_snapshots
-                    (market_id, outcome, price, volume_24h)
-                VALUES (%s, %s, %s, %s)
-                """,
-                (m.market_id, m.outcome, m.price, m.volume_24h),
-            )
-        self.conn.commit()
+        try:
+            for m in markets:
+                cur.execute(
+                    """
+                    INSERT INTO markets
+                        (market_id, outcome, question, price, volume_24h, updated_at)
+                    VALUES (%s, %s, %s, %s, %s, now())
+                    ON CONFLICT (market_id, outcome) DO UPDATE SET
+                        question   = EXCLUDED.question,
+                        price      = EXCLUDED.price,
+                        volume_24h = EXCLUDED.volume_24h,
+                        updated_at = now()
+                    """,
+                    (m.market_id, m.outcome, m.question, m.price, m.volume_24h),
+                )
+                cur.execute(
+                    """
+                    INSERT INTO market_snapshots
+                        (market_id, outcome, price, volume_24h)
+                    VALUES (%s, %s, %s, %s)
+                    """,
+                    (m.market_id, m.outcome, m.price, m.volume_24h),
+                )
+            self.conn.commit()
+        except Exception:
+            # never leave the connection in an aborted transaction state
+            self.conn.rollback()
+            raise
         return len(markets)
 
     def latest(self) -> list[dict]:

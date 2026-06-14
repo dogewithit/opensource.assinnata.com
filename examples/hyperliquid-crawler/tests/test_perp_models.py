@@ -46,3 +46,15 @@ def test_parse_perp_rejects_wrong_shape():
 def test_parse_perp_requires_matching_lengths():
     with pytest.raises(ValueError):
         parse_perp_markets([{"universe": [{"name": "BTC"}]}, []])
+
+
+def test_parse_perp_rejects_entry_missing_name():
+    bad = [{"universe": [{"szDecimals": 5}]}, [{"markPx": "1", "dayNtlVlm": "1"}]]
+    with pytest.raises(ValueError):
+        parse_perp_markets(bad)
+
+
+def test_parse_perp_rejects_non_dict_entry():
+    bad = [{"universe": ["BTC"]}, [{"markPx": "1"}]]
+    with pytest.raises(ValueError):
+        parse_perp_markets(bad)

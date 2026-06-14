@@ -36,3 +36,10 @@ def test_invalid_price_records_error_span(spans):
         execute_trade({"market_id": "X", "side": "sell", "qty": 1, "price": 0})
 
     assert spans.get_finished_spans()[0].status.status_code == StatusCode.ERROR
+
+
+def test_missing_market_id_records_error_span(spans):
+    with pytest.raises(ValueError, match="market_id is required"):
+        execute_trade({"side": "buy", "qty": 1, "price": 100})
+
+    assert spans.get_finished_spans()[0].status.status_code == StatusCode.ERROR

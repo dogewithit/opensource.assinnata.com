@@ -16,10 +16,10 @@ tests locally against LocalStack 4.14, Postgres, or a minikube cluster. See
 .
 ├── frontend/                        # Astro static site (the showcase)
 ├── examples/
-│   ├── hyperliquid-crawler/         # live Hyperliquid markets -> Postgres        (18 tests)
+│   ├── hyperliquid-crawler/         # live Hyperliquid markets -> Postgres        (20 tests)
 │   ├── aws-localstack/              # S3 + DynamoDB market artifact store          (5 tests)
 │   ├── terraform-localstack/        # Terraform via tflocal, apply + assert        (3 tests)
-│   ├── opentelemetry-tracing/       # OTel spans, in memory exporter               (3 tests)
+│   ├── opentelemetry-tracing/       # OTel spans, in memory exporter               (4 tests)
 │   ├── prometheus-metrics/          # Prometheus metrics + exposition format       (3 tests)
 │   ├── kubernetes-minikube/         # Deployment + Service + scaling on minikube   (4 tests)
 │   └── grafana-prometheus-minikube/ # Prometheus + Grafana dashboards on minikube  (7 tests)
@@ -36,7 +36,7 @@ and `README.md`.
 ```bash
 make up            # start LocalStack 4.14 + Postgres 16 (Postgres on host :55432)
 make minikube-up   # start a minikube cluster (for the Kubernetes and Grafana examples)
-make test          # run all 43 tests across every example
+make test          # run all 46 tests across every example
 make down          # tear down
 ```
 

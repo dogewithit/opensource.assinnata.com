@@ -235,11 +235,13 @@ def fetch_via_service(
         metadata=client.V1ObjectMeta(name=pod_name),
         spec=client.V1PodSpec(
             restart_policy="Never",
+            # bound the lifetime so a probe pod cannot linger if teardown is skipped
+            active_deadline_seconds=300,
             containers=[
                 client.V1Container(
                     name="curl",
                     image="busybox:1.36",
-                    command=["sleep", "300"],
+                    command=["sleep", "120"],
                 )
             ],
         ),
@@ -252,7 +254,9 @@ def fetch_via_service(
 
     _wait_for_pod_running(clients, namespace, pod_name)
 
-    resp = stream(
+    # Keep stdout and stderr on separate channels and check the exit status, so a
+    # failed wget cannot be mistaken for a successful response body.
+    ws = stream(
         clients.core.connect_get_namespaced_pod_exec,
         pod_name,
         namespace,
@@ -261,8 +265,18 @@ def fetch_via_service(
         stdin=False,
         stdout=True,
         tty=False,
+        _preload_content=False,
     )
-    return resp
+    ws.run_forever(timeout=30)
+    stdout = ws.read_stdout()
+    stderr = ws.read_stderr()
+    returncode = ws.returncode
+    ws.close()
+    if returncode:  # non-zero, non-None
+        raise RuntimeError(
+            f"in cluster fetch of {url} failed (exit {returncode}): {stderr.strip()}"
+        )
+    return stdout
 
 
 def _wait_for_pod_running(

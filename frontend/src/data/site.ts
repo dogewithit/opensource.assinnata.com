@@ -12,7 +12,7 @@ export const profile = {
   links: {
     email: 'matteo@assinnata.com',
     linkedin: 'https://linkedin.com/in/assinnata',
-    github: 'https://github.com/assinnata',
+    github: 'https://github.com/dogewithit/opensource.assinnata.com',
     site: 'https://assinnata.com',
   },
 } as const;

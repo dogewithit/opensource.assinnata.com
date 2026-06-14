@@ -74,4 +74,9 @@ def repo():
     try:
         yield r
     finally:
+        # clear any aborted transaction before closing
+        try:
+            conn.rollback()
+        except Exception:
+            pass
         conn.close()

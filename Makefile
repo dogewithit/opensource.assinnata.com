@@ -60,5 +60,8 @@ test-%: venv up ## Run a single example's tests, e.g. `make test-hyperliquid-cra
 frontend: ## Run the Astro frontend dev server
 	cd frontend && npm install && npm run dev
 
+frontend-build: ## Build the static site exactly as CI deploys it
+	cd frontend && npm install && npm run build
+
 clean: ## Remove venv and build artifacts
 	rm -rf $(VENV) frontend/dist

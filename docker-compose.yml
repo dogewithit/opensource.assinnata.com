@@ -11,12 +11,11 @@ services:
     ports:
       - "4566:4566" # edge / unified gateway
     environment:
-      - SERVICES=s3,dynamodb,sqs,sns
+      - SERVICES=s3,dynamodb
       - DEBUG=0
       - LS_LOG=warn
-      - DOCKER_HOST=unix:///var/run/docker.sock
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
+    # No Docker socket mount: the enabled services (s3, dynamodb) do not need it,
+    # and mounting it would grant the container root on the host.
     healthcheck:
       test: ["CMD-SHELL", "curl -sf http://localhost:4566/_localstack/health | grep -q '\"s3\"' || exit 1"]
       interval: 5s

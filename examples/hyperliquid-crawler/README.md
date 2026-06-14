@@ -41,7 +41,7 @@ make up                       # LocalStack 4.14 + Postgres 16
 make test-hyperliquid-crawler
 ```
 
-18 tests: payload parsing/validation (both shapes), upsert idempotency,
+20 tests: payload parsing/validation (both shapes), upsert idempotency,
 snapshot history, an end-to-end crawl through a fake source, and a **live test**
 that hits `api.hyperliquid.xyz` and stores real markets (skips if offline).
 

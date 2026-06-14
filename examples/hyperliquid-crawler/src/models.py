@@ -103,12 +103,17 @@ def parse_perp_markets(payload: list) -> list[OutcomeMarket]:
 
     results: list[OutcomeMarket] = []
     for market, ctx in zip(universe, contexts):
+        if not isinstance(market, dict) or not isinstance(ctx, dict):
+            raise ValueError(f"malformed universe/context entry: {market!r}")
         if market.get("isDelisted"):
             continue
         mark = ctx.get("markPx")
         if mark is None:
             continue
-        name = str(market["name"])
+        name = market.get("name")
+        if not name:
+            raise ValueError(f"market entry missing 'name': {market!r}")
+        name = str(name)
         vol = ctx.get("dayNtlVlm")
         results.append(
             OutcomeMarket(
