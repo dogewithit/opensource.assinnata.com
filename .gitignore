@@ -1,0 +1,21 @@
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+
+# terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# node / astro (frontend has its own ignore too)
+node_modules/
+frontend/dist/
+frontend/.astro/
+
+# os / editors
+.DS_Store
+*.log

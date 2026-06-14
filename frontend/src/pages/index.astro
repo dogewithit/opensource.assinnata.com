@@ -1,0 +1,205 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CategorySection from '../components/CategorySection.astro';
+import { infraCategories, softwareCategories } from '../data/tools';
+import { profile } from '../data/site';
+
+const allCategories = [...softwareCategories, ...infraCategories];
+const toolCount = infraCategories.reduce((n, c) => n + c.tools.length, 0);
+const exampleCount = allCategories
+  .flatMap((c) => c.tools)
+  .filter((t) => t.example).length;
+---
+
+<Layout title={`${profile.name} — Tools & Infrastructure`}>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">{profile.title} · {profile.location}</p>
+      <h1 class="hero-title">{profile.tagline}</h1>
+      <p class="hero-sum">{profile.summary}</p>
+      <ul class="values">
+        {profile.values.map((v) => <li>{v}</li>)}
+      </ul>
+      <nav class="hero-nav">
+        {
+          allCategories.map((c) => (
+            <a href={`#${c.id}`}>{c.title}</a>
+          ))
+        }
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="intro">
+      <h2 class="section-kicker">Software Engineering</h2>
+      <p class="intro-text">
+        Flagship code examples — each one is a real, tested project. {exampleCount}
+        of the tools below link to a working example validated locally against
+        LocalStack&nbsp;4.14 and Postgres; anything without a passing test is
+        marked <strong>no tested example</strong> rather than faked.
+      </p>
+    </div>
+
+    {softwareCategories.map((category) => <CategorySection category={category} />)}
+
+    <div class="intro intro-divider">
+      <h2 class="section-kicker">Infrastructure &amp; Observability</h2>
+      <p class="intro-text">
+        The {toolCount} tools I actually reach for to build and run trading
+        infrastructure — grounded in real production work, not a wishlist.
+        Proficiency and a tested example are shown per tool where one exists.
+      </p>
+    </div>
+
+    {infraCategories.map((category) => <CategorySection category={category} />)}
+  </main>
+
+  <footer class="foot">
+    <div class="foot-inner">
+      <span>© {profile.name} · {profile.location}</span>
+      <nav class="foot-links">
+        <a href={`mailto:${profile.links.email}`}>Email</a>
+        <a href={profile.links.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href={profile.links.site} target="_blank" rel="noopener noreferrer">assinnata.com</a>
+      </nav>
+    </div>
+  </footer>
+</Layout>
+
+<style>
+  .hero {
+    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: #fff;
+    padding: 4.5rem 1.5rem 3.5rem;
+  }
+
+  .hero-inner {
+    max-width: var(--maxw);
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 0.72rem;
+    color: var(--sage);
+    font-weight: 600;
+  }
+
+  .hero-title {
+    font-size: clamp(1.7rem, 4vw, 2.7rem);
+    font-weight: 700;
+    line-height: 1.12;
+    margin: 1rem 0;
+    max-width: 22ch;
+  }
+
+  .hero-sum {
+    color: #c8d2dd;
+    font-size: 1.02rem;
+    max-width: 60ch;
+  }
+
+  .values {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 1.6rem 0 0;
+  }
+
+  .values li {
+    border: 1px solid rgba(204, 212, 204, 0.4);
+    color: var(--sage);
+    border-radius: 999px;
+    padding: 0.3rem 0.95rem;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+  }
+
+  .hero-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.4rem;
+    margin-top: 2rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid rgba(204, 212, 204, 0.18);
+  }
+
+  .hero-nav a {
+    color: #c8d2dd;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: color 0.15s ease;
+  }
+
+  .hero-nav a:hover {
+    color: #fff;
+  }
+
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.75rem;
+  }
+
+  .section-kicker {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .intro-text {
+    margin-top: 0.5rem;
+    color: var(--muted);
+    max-width: 65ch;
+  }
+
+  .intro-divider {
+    margin-top: 0.75rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--sage);
+  }
+
+  .foot {
+    border-top: 1px solid var(--sage);
+    background: var(--card);
+  }
+
+  .foot-inner {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 1.6rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .foot-links {
+    display: flex;
+    gap: 1.2rem;
+  }
+
+  .foot-links a {
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .foot-links a:hover {
+    color: var(--accent);
+  }
+</style>

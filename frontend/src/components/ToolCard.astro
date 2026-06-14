@@ -1,0 +1,200 @@
+---
+import { PROFICIENCY_LABELS, githubUrl, type Tool } from '../data/tools';
+
+interface Props {
+  tool: Tool;
+}
+
+const { tool } = Astro.props;
+const label = PROFICIENCY_LABELS[tool.proficiency];
+---
+
+<div class:list={['card', { rejected: tool.rejected }]}>
+  <div class="card-head">
+    {
+      tool.url ? (
+        <a class="card-name" href={tool.url} target="_blank" rel="noopener noreferrer">
+          {tool.name} <span class="ext" aria-hidden="true">↗</span>
+        </a>
+      ) : (
+        <h3 class="card-name">{tool.name}</h3>
+      )
+    }
+  </div>
+
+  <p class="card-note">{tool.note}</p>
+
+  <div class="meter" role="img" aria-label={`Proficiency: ${label}`}>
+    {[1, 2, 3, 4, 5].map((i) => (
+      <span class:list={['dot', { on: i <= tool.proficiency }]} />
+    ))}
+    <span class="meter-label">{label}</span>
+  </div>
+
+  {
+    tool.example && (
+      <a
+        class="example"
+        href={githubUrl(tool.example.path)}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="example-icon" aria-hidden="true">{'</>'}</span>
+        <span class="example-text">
+          Tested example
+          {tool.example.label && <em>{tool.example.label}</em>}
+        </span>
+        <span class="example-arrow" aria-hidden="true">→</span>
+      </a>
+    )
+  }
+
+  {
+    tool.rejected && (
+      <div class="reject" title={tool.rejected}>
+        <span class="reject-tag">no tested example</span>
+        <span class="reject-why">{tool.rejected}</span>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    background: var(--card);
+    border: 1px solid var(--sage);
+    border-radius: var(--radius);
+    padding: 1.15rem 1.25rem 1.1rem;
+    box-shadow: var(--shadow);
+  }
+
+  .card.rejected {
+    background: #fbfbfa;
+    border-style: dashed;
+  }
+
+  .card-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    color: var(--navy);
+    text-decoration: none;
+  }
+
+  a.card-name:hover {
+    color: var(--accent);
+  }
+
+  .ext {
+    color: var(--accent);
+    font-size: 0.8rem;
+  }
+
+  .card-note {
+    font-size: 0.875rem;
+    color: var(--muted);
+    flex: 1 1 auto;
+  }
+
+  .meter {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 0.2rem;
+  }
+
+  .dot {
+    width: 14px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--sage-2);
+  }
+
+  .dot.on {
+    background: var(--accent);
+  }
+
+  .meter-label {
+    margin-left: 8px;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .example {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+    padding: 0.5rem 0.7rem;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 9px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition:
+      background 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  .example:hover {
+    background: var(--navy-2);
+    transform: translateY(-1px);
+  }
+
+  .example-icon {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--sage);
+    font-size: 0.78rem;
+  }
+
+  .example-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    flex: 1 1 auto;
+  }
+
+  .example-text em {
+    font-style: normal;
+    font-weight: 500;
+    color: #aeb9c6;
+    font-size: 0.72rem;
+  }
+
+  .example-arrow {
+    color: var(--sage);
+  }
+
+  .reject {
+    margin-top: 0.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .reject-tag {
+    align-self: flex-start;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: #9a6b3f;
+    background: #f6ece1;
+    border: 1px solid #e6d3bf;
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+  }
+
+  .reject-why {
+    font-size: 0.74rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+</style>

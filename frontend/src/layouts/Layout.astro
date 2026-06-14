@@ -1,0 +1,73 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'The tools Matteo Assinnata uses to build and run trading infrastructure.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --navy: #1d2a3a;
+    --navy-2: #243447;
+    --sage: #ccd4cc;
+    --sage-2: #e7ebe7;
+    --ink: #2b2f33;
+    --muted: #5f655f;
+    --rule: #aab4aa;
+    --accent: #7fa6a0;
+    --bg: #f4f5f3;
+    --card: #ffffff;
+    --radius: 14px;
+    --maxw: 1100px;
+    --shadow: 0 1px 2px rgba(29, 42, 58, 0.06), 0 8px 24px rgba(29, 42, 58, 0.08);
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
+      Arial, sans-serif;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: #fff;
+  }
+</style>

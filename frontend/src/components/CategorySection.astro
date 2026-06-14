@@ -1,0 +1,50 @@
+---
+import { type Category } from '../data/tools';
+import ToolCard from './ToolCard.astro';
+
+interface Props {
+  category: Category;
+}
+
+const { category } = Astro.props;
+---
+
+<section class="cat" id={category.id}>
+  <header class="cat-head">
+    <h2 class="cat-title">{category.title}</h2>
+    <p class="cat-blurb">{category.blurb}</p>
+  </header>
+  <div class="grid">
+    {category.tools.map((tool) => <ToolCard tool={tool} />)}
+  </div>
+</section>
+
+<style>
+  .cat {
+    scroll-margin-top: 1.5rem;
+  }
+
+  .cat-head {
+    border-left: 3px solid var(--accent);
+    padding-left: 0.9rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .cat-title {
+    font-size: 1.4rem;
+    color: var(--navy);
+    letter-spacing: 0.3px;
+  }
+
+  .cat-blurb {
+    font-size: 0.92rem;
+    color: var(--muted);
+    margin-top: 0.15rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+</style>

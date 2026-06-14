@@ -1,0 +1,17 @@
+{
+  "name": "opensource-assinnata-com",
+  "type": "module",
+  "version": "0.1.0",
+  "private": false,
+  "license": "MIT",
+  "description": "Open-source showcase of the tools Matteo Assinnata uses day-to-day, grounded in his curriculum.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^6.4.6"
+  }
+}

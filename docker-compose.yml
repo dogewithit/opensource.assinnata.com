@@ -1,0 +1,42 @@
+# Local validation stack for the examples in this repo.
+#   make up      -> start LocalStack + Postgres
+#   make test    -> run every example's test suite against them
+#   make down    -> tear everything down
+#
+# Pinned to LocalStack 4.14 as agreed.
+services:
+  localstack:
+    image: localstack/localstack:4.14
+    container_name: oss-localstack
+    ports:
+      - "4566:4566" # edge / unified gateway
+    environment:
+      - SERVICES=s3,dynamodb,sqs,sns
+      - DEBUG=0
+      - LS_LOG=warn
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:4566/_localstack/health | grep -q '\"s3\"' || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  postgres:
+    image: postgres:16
+    container_name: oss-postgres
+    ports:
+      # host 55432 to avoid clashing with a local Postgres on 5432
+      - "55432:5432"
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: markets
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d markets"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
