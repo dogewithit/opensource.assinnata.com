@@ -44,14 +44,25 @@ tool card does not get an example link.
 | 8 | CI: GitHub Actions runs all suites | green workflow | ⏳ |
 | 9 | Create GitHub repo + push | links resolve | ⏳ |
 
-## Rejected (no local test harness — honoring the tested-or-rejected rule)
+## Kubernetes and Grafana on minikube
 
-These tools stay on the grid for honesty about the stack, but get **no example
-link** until a tested example exists:
+Added later, validated on a local minikube cluster (profile `oss`):
 
-- **Amazon EKS / AWS Fargate / Kubernetes** — not reproducible on LocalStack
-  community; would need `kind`/a real cluster to test meaningfully.
-- **Grafana** — dashboards are JSON config, not unit-testable in isolation.
-- **AWS Budgets / Cost Anomaly Detection** — LocalStack Pro-only APIs.
+- **examples/kubernetes-minikube** — deploys a Deployment + Service, waits for
+  rollout, scales it, and reaches the service from inside the cluster. Backs the
+  Kubernetes and Amazon EKS cards. 4 tests.
+- **examples/grafana-prometheus-minikube** — deploys Prometheus + Grafana with a
+  provisioned datasource and dashboard, tested through their HTTP APIs. Backs the
+  Grafana card. 7 tests.
 
-Revisit if/when a credible local test exists for each.
+Run them with `make minikube-up` then `make test-kubernetes-minikube` /
+`make test-grafana-prometheus-minikube`.
+
+## Tools shown without an example
+
+These stay on the grid because they are part of the stack, but carry no link and
+no negative note. A tool gets a link only once a real tested example exists:
+
+- **AWS Fargate** — serverless compute, not represented by the minikube example.
+- **AWS Budgets / Cost Anomaly Detection** — LocalStack Pro only APIs.
+- **Feature branch environments** — a way of working, shown through the CI setup.

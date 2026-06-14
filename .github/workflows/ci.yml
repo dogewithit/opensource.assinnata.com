@@ -96,6 +96,31 @@ jobs:
       - run: npm install
       - run: npm run build
 
+  kubernetes:
+    name: kubernetes + grafana on minikube
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Start minikube
+        uses: medyagh/setup-minikube@latest
+        with:
+          cpus: "2"
+          memory: 4000m
+      - name: Name the context 'oss' (the examples target it)
+        run: kubectl config rename-context minikube oss
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r examples/kubernetes-minikube/requirements.txt \
+                      -r examples/grafana-prometheus-minikube/requirements.txt
+      - name: Kubernetes example
+        run: python -m pytest examples/kubernetes-minikube/tests -q
+      - name: Grafana + Prometheus example
+        run: python -m pytest examples/grafana-prometheus-minikube/tests -q
+
   deploy:
     name: deploy to Cloudflare Pages
     runs-on: ubuntu-latest

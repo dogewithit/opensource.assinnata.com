@@ -2,8 +2,8 @@
  * Tools catalogue, the single source of truth for the tool grid.
  *
  * Grounded in Matteo Assinnata's curriculum (Trading Infrastructure Engineer).
- * Every tool that ships an example links to a tested project under examples/.
- * Tools without a locally testable example are marked rejected (see ROADMAP).
+ * A tool links to a tested project under examples/ when one exists. Tools
+ * without a tested example simply show no link.
  *
  * proficiency: 1 to 5 (1 = familiar, 3 = working knowledge, 5 = production owner)
  */
@@ -29,8 +29,6 @@ export interface Tool {
   url?: string;
   /** a tested code example in this repo */
   example?: ExampleRef;
-  /** set when there is no locally tested example (honours tested or rejected) */
-  rejected?: string;
 }
 
 export interface Category {
@@ -74,7 +72,7 @@ export const softwareCategories: Category[] = [
 
 /**
  * Infrastructure and Observability, the stack, with a tested example wherever
- * one can be validated locally.
+ * one exists.
  */
 export const infraCategories: Category[] = [
   {
@@ -94,21 +92,20 @@ export const infraCategories: Category[] = [
         note: 'Runs the trading and venture builder workloads. I ran EKS in production while trades were live.',
         proficiency: 5,
         url: 'https://kubernetes.io/',
-        rejected: 'I cannot reproduce this faithfully on LocalStack, it needs a real cluster, so there is no tested example yet.',
+        example: { path: 'examples/kubernetes-minikube', label: 'deploy and scale on minikube' },
       },
       {
         name: 'Amazon EKS',
         note: 'I designed the EKS and Fargate setup across a whole venture builder portfolio.',
         proficiency: 4,
         url: 'https://aws.amazon.com/eks/',
-        rejected: 'EKS does not reproduce faithfully on LocalStack, so there is no tested example yet.',
+        example: { path: 'examples/kubernetes-minikube', label: 'the Kubernetes layer on minikube' },
       },
       {
         name: 'AWS Fargate',
         note: 'Serverless containers. It took node management off my plate on the EKS platform.',
         proficiency: 4,
         url: 'https://aws.amazon.com/fargate/',
-        rejected: 'There is no honest way to test this locally without a real cluster.',
       },
     ],
   },
@@ -142,7 +139,6 @@ export const infraCategories: Category[] = [
         name: 'Feature branch environments',
         note: 'A throwaway environment for every branch, so every change can be reviewed on its own.',
         proficiency: 4,
-        rejected: 'This is a way of working rather than a library, so there is no standalone test. You can see it in the CI setup.',
       },
     ],
   },
@@ -170,7 +166,7 @@ export const infraCategories: Category[] = [
         note: 'Dashboards for the health of the systems and the trading on top of them.',
         proficiency: 4,
         url: 'https://grafana.com/',
-        rejected: 'Dashboards are just JSON config, so there is nothing meaningful to unit test on its own yet.',
+        example: { path: 'examples/grafana-prometheus-minikube', label: 'provisioned dashboards on minikube' },
       },
     ],
   },
@@ -184,14 +180,12 @@ export const infraCategories: Category[] = [
         note: 'Guardrails that keep cloud spend predictable.',
         proficiency: 3,
         url: 'https://aws.amazon.com/aws-cost-management/aws-budgets/',
-        rejected: 'This API only lives in LocalStack Pro, so I cannot test it on the free tier.',
       },
       {
         name: 'Cost Anomaly Detection',
         note: 'I used anomaly analysis to cut cloud cost across a portfolio of projects.',
         proficiency: 3,
         url: 'https://aws.amazon.com/aws-cost-management/aws-cost-anomaly-detection/',
-        rejected: 'This API only lives in LocalStack Pro, so I cannot test it on the free tier.',
       },
     ],
   },

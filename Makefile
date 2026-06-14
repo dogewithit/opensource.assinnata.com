@@ -33,6 +33,12 @@ wait: ## Block until LocalStack + Postgres are healthy
 		sleep 2; \
 	done; echo "services did not become healthy in time" >&2; exit 1
 
+minikube-up: ## Start a local minikube cluster (profile oss) for the Kubernetes examples
+	minikube start --driver=docker --cpus=4 --memory=4096 --profile=oss
+
+minikube-down: ## Delete the minikube cluster
+	minikube delete --profile=oss
+
 venv: ## Create the shared Python venv and install all example deps
 	@test -d $(VENV) || python3 -m venv $(VENV)
 	@$(PIP) install -q --upgrade pip

@@ -9,7 +9,7 @@ const { tool } = Astro.props;
 const label = PROFICIENCY_LABELS[tool.proficiency];
 ---
 
-<div class:list={['card', { rejected: tool.rejected }]}>
+<div class="card">
   <div class="card-head">
     {
       tool.url ? (
@@ -48,15 +48,6 @@ const label = PROFICIENCY_LABELS[tool.proficiency];
       </a>
     )
   }
-
-  {
-    tool.rejected && (
-      <div class="reject" title={tool.rejected}>
-        <span class="reject-tag">no tested example</span>
-        <span class="reject-why">{tool.rejected}</span>
-      </div>
-    )
-  }
 </div>
 
 <style>
@@ -69,11 +60,6 @@ const label = PROFICIENCY_LABELS[tool.proficiency];
     border-radius: var(--radius);
     padding: 1.15rem 1.25rem 1.1rem;
     box-shadow: var(--shadow);
-  }
-
-  .card.rejected {
-    background: #fbfbfa;
-    border-style: dashed;
   }
 
   .card-name {
@@ -170,31 +156,5 @@ const label = PROFICIENCY_LABELS[tool.proficiency];
 
   .example-arrow {
     color: var(--sage);
-  }
-
-  .reject {
-    margin-top: 0.35rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .reject-tag {
-    align-self: flex-start;
-    font-size: 0.66rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 700;
-    color: #9a6b3f;
-    background: #f6ece1;
-    border: 1px solid #e6d3bf;
-    border-radius: 999px;
-    padding: 0.15rem 0.6rem;
-  }
-
-  .reject-why {
-    font-size: 0.74rem;
-    color: var(--muted);
-    font-style: italic;
   }
 </style>
