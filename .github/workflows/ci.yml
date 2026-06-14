@@ -95,3 +95,27 @@ jobs:
           node-version: "24"
       - run: npm install
       - run: npm run build
+
+  deploy:
+    name: deploy to Cloudflare Pages
+    runs-on: ubuntu-latest
+    # only auto-deploy a green main; never on PRs or red builds
+    needs: [examples, frontend]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Build site
+        working-directory: frontend
+        run: |
+          npm install
+          npm run build
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: frontend
+          command: pages deploy dist --project-name=opensource-assinnata --branch=main
