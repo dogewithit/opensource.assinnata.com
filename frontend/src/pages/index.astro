@@ -6,9 +6,6 @@ import { profile } from '../data/site';
 
 const allCategories = [...softwareCategories, ...infraCategories];
 const toolCount = infraCategories.reduce((n, c) => n + c.tools.length, 0);
-const exampleCount = allCategories
-  .flatMap((c) => c.tools)
-  .filter((t) => t.example).length;
 ---
 
 <Layout title={`${profile.name} · Tools and Infrastructure`}>
@@ -34,10 +31,8 @@ const exampleCount = allCategories
     <div class="intro">
       <h2 class="section-kicker">Software Engineering</h2>
       <p class="intro-text">
-        These are real projects I have written, and every one is tested.
-        {exampleCount} of the tools below link to a working example that I
-        validate locally against LocalStack&nbsp;4.14, Postgres, and a minikube
-        cluster.
+        These are real projects I have written, with working examples locally
+        tested on LocalStack, Postgres and Minikube.
       </p>
     </div>
 
