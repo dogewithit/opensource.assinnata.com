@@ -1,10 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import CategorySection from '../components/CategorySection.astro';
-import { infraCategories, softwareCategories, CI_URL, EXAMPLE_COUNT, TOTAL_TESTS } from '../data/tools';
+import { infraCategories, softwareCategories, CI_URL, EXAMPLE_COUNT, TOTAL_TESTS, type Category } from '../data/tools';
 import { profile } from '../data/site';
 
-const allCategories = [...softwareCategories, ...infraCategories];
+const byId = (id: string): Category => {
+  const c = infraCategories.find((cat) => cat.id === id);
+  if (!c) throw new Error(`unknown category: ${id}`);
+  return c;
+};
+const iac = byId('iac');
+const cloud = byId('cloud-compute');
+const cicd = byId('cicd');
+const observability = byId('observability');
+const finops = byId('finops');
+const softwareEngineering = softwareCategories[0];
+
+// Row order: infrastructure as code first, then cloud, then software
+// engineering, then the rest.
+const orderedCategories: Category[] = [
+  iac,
+  cloud,
+  softwareEngineering,
+  cicd,
+  observability,
+  finops,
+];
+
 const toolCount = infraCategories.reduce((n, c) => n + c.tools.length, 0);
 ---
 
@@ -26,7 +48,7 @@ const toolCount = infraCategories.reduce((n, c) => n + c.tools.length, 0);
       </a>
       <nav class="hero-nav">
         {
-          allCategories.map((c) => (
+          orderedCategories.map((c) => (
             <a href={`#${c.id}`}>{c.title}</a>
           ))
         }
@@ -36,16 +58,6 @@ const toolCount = infraCategories.reduce((n, c) => n + c.tools.length, 0);
 
   <main class="wrap">
     <div class="intro">
-      <h2 class="section-kicker">Software Engineering</h2>
-      <p class="intro-text">
-        These are real projects I have written, with working examples locally
-        tested on LocalStack, Postgres and Minikube.
-      </p>
-    </div>
-
-    {softwareCategories.map((category) => <CategorySection category={category} />)}
-
-    <div class="intro intro-divider">
       <h2 class="section-kicker">Infrastructure and Observability</h2>
       <p class="intro-text">
         These are the {toolCount} tools I actually reach for to build and run
@@ -55,7 +67,30 @@ const toolCount = infraCategories.reduce((n, c) => n + c.tools.length, 0);
       </p>
     </div>
 
-    {infraCategories.map((category) => <CategorySection category={category} />)}
+    <CategorySection category={iac} />
+    <CategorySection category={cloud} />
+
+    <div class="intro intro-divider">
+      <h2 class="section-kicker">Software Engineering</h2>
+      <p class="intro-text">
+        These are real projects I have written, with working examples locally
+        tested on LocalStack, Postgres and Minikube.
+      </p>
+    </div>
+
+    <CategorySection category={softwareEngineering} />
+
+    <div class="intro intro-divider">
+      <h2 class="section-kicker">More Infrastructure</h2>
+      <p class="intro-text">
+        The rest of the stack that keeps trading systems shipping, observable and
+        affordable.
+      </p>
+    </div>
+
+    <CategorySection category={cicd} />
+    <CategorySection category={observability} />
+    <CategorySection category={finops} />
   </main>
 
   <footer class="foot">
