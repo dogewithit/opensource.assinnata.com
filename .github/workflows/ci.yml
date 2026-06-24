@@ -86,6 +86,16 @@ jobs:
           done
           echo "ALL EXAMPLES PASSED"
 
+      - name: Test counts on the site match pytest
+        run: |
+          ./scripts/gen-test-counts.sh
+          if ! git diff --quiet -- frontend/src/data/test-counts.json; then
+            echo "::error::frontend/src/data/test-counts.json is stale. Run ./scripts/gen-test-counts.sh and commit." >&2
+            git diff -- frontend/src/data/test-counts.json
+            exit 1
+          fi
+          echo "test counts are in sync"
+
   frontend:
     name: frontend build
     runs-on: ubuntu-latest

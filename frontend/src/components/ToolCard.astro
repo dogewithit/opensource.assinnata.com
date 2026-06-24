@@ -1,5 +1,5 @@
 ---
-import { PROFICIENCY_LABELS, githubUrl, type Tool } from '../data/tools';
+import { PROFICIENCY_LABELS, githubUrl, testCount, type Tool } from '../data/tools';
 
 interface Props {
   tool: Tool;
@@ -7,6 +7,7 @@ interface Props {
 
 const { tool } = Astro.props;
 const label = PROFICIENCY_LABELS[tool.proficiency];
+const tests = tool.example ? testCount(tool.example.path) : undefined;
 ---
 
 <div class="card">
@@ -36,6 +37,11 @@ const label = PROFICIENCY_LABELS[tool.proficiency];
           Example
           {tool.example.label && <em>{tool.example.label}</em>}
         </span>
+        {tests && (
+          <span class="example-tests" aria-label={`${tests} passing tests`}>
+            ✓ {tests}
+          </span>
+        )}
         <span class="example-arrow" aria-hidden="true">→</span>
       </a>
     )
@@ -139,6 +145,17 @@ const label = PROFICIENCY_LABELS[tool.proficiency];
     font-weight: 500;
     color: #aeb9c6;
     font-size: 0.72rem;
+  }
+
+  .example-tests {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--sage);
+    border: 1px solid rgba(204, 212, 204, 0.35);
+    border-radius: 999px;
+    padding: 0.1rem 0.45rem;
+    white-space: nowrap;
   }
 
   .example-arrow {

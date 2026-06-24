@@ -8,7 +8,7 @@ VENV  := .venv
 PY    := $(VENV)/bin/python
 PIP   := $(VENV)/bin/pip
 
-.PHONY: help up down logs wait venv test test-% fmt frontend clean
+.PHONY: help up down logs wait venv test test-% test-counts fmt frontend clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -56,6 +56,9 @@ test: venv up ## Run every example's test suite against the local stack
 
 test-%: venv up ## Run a single example's tests, e.g. `make test-hyperliquid-crawler`
 	$(PY) -m pytest examples/$*/tests -q
+
+test-counts: venv ## Regenerate the per-example test counts the site shows
+	PY=$(PY) ./scripts/gen-test-counts.sh
 
 frontend: ## Run the Astro frontend dev server
 	cd frontend && npm install && npm run dev
