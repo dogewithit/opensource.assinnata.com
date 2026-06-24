@@ -161,4 +161,28 @@ const tests = tool.example ? testCount(tool.example.path) : undefined;
   .example-arrow {
     color: var(--sage);
   }
+
+  /*
+   * Equal-height rows via subgrid. Each card shares its grid row's four tracks
+   * (name, note, meter, example), so the example box is sized once per row to
+   * the tallest label in that row and every box stretches to match. The plain
+   * flex layout above is the fallback where subgrid is unavailable.
+   */
+  @supports (grid-template-rows: subgrid) {
+    .card {
+      display: grid;
+      grid-template-rows: subgrid;
+      grid-row: span 4;
+      row-gap: 0.55rem;
+    }
+
+    .meter {
+      margin-top: 0;
+      align-self: center;
+    }
+
+    .example {
+      margin-top: 0;
+    }
+  }
 </style>
