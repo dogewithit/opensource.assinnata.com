@@ -144,10 +144,15 @@ export const infraCategories: Category[] = [
     blurb: 'Infrastructure I can reproduce and review. Nothing is held up by hand.',
     tools: [
       {
-        name: 'Terraform',
-        note: 'How I describe and version cloud infrastructure. I have used it to provision real production infra.',
+        name: 'Terragrunt',
+        note: 'How I keep Terraform DRY. One provider and one set of conventions, reused across every component. Here it stands up a VPC, a security group, a transit gateway and the EC2 nodes from the most widely used registry modules.',
         proficiency: 4,
-        example: { path: 'examples/terraform-localstack', label: 'tflocal, apply then assert' },
+        example: { path: 'examples/terragrunt-localstack', label: 'VPC, security group, transit gateway and EC2 on LocalStack' },
+      },
+      {
+        name: 'Terraform',
+        note: 'The foundation underneath. How I describe and version cloud infrastructure, used to provision real production infra.',
+        proficiency: 4,
       },
     ],
   },

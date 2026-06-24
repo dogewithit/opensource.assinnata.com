@@ -10,7 +10,7 @@
     "examples/opentelemetry-tracing": 4,
     "examples/position-pnl": 18,
     "examples/prometheus-metrics": 3,
-    "examples/terraform-localstack": 3
+    "examples/terragrunt-localstack": 8
   },
-  "total": 88
+  "total": 93
 }

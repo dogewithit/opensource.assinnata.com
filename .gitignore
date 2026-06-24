@@ -5,11 +5,13 @@ __pycache__/
 .pytest_cache/
 .env
 
-# terraform
+# terraform / terragrunt
 **/.terraform/
 *.tfstate
 *.tfstate.*
 .terraform.lock.hcl
+**/.terragrunt-cache/
+**/.plugin-cache/
 
 # node / astro (frontend has its own ignore too)
 node_modules/

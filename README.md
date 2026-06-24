@@ -21,7 +21,7 @@ or a minikube cluster. See [ROADMAP.md](ROADMAP.md).
 │   ├── ohlcv-aggregator/            # trade stream -> OHLCV candles with VWAP     (12 tests)
 │   ├── position-pnl/                # position + realized/unrealized P&L          (18 tests)
 │   ├── aws-localstack/              # S3 + DynamoDB market artifact store          (5 tests)
-│   ├── terraform-localstack/        # Terraform via tflocal, apply + assert        (3 tests)
+│   ├── terragrunt-localstack/       # Terragrunt: VPC + SG + TGW + EC2 modules      (8 tests)
 │   ├── opentelemetry-tracing/       # OTel spans, in memory exporter               (4 tests)
 │   ├── prometheus-metrics/          # Prometheus metrics + exposition format       (3 tests)
 │   ├── kubernetes-minikube/         # Deployment + Service + scaling on minikube   (4 tests)
@@ -39,7 +39,7 @@ and `README.md`.
 ```bash
 make up            # start LocalStack 4.14 + Postgres 16 (Postgres on host :55432)
 make minikube-up   # start a minikube cluster (for the Kubernetes and Grafana examples)
-make test          # run all 88 tests across every example
+make test          # run all 93 tests across every example
 make down          # tear down
 ```
 

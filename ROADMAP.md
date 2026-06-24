@@ -37,7 +37,7 @@ tool card does not get an example link.
 | 1 | Foundation: structure, docker-compose, Makefile | `make up` healthy | ✅ |
 | 2 | **Hyperliquid outcome-markets crawler** → Postgres | pytest + Postgres | ▶ in progress |
 | 3 | AWS (S3 + DynamoDB) | pytest + LocalStack | ⏳ |
-| 4 | Terraform (tflocal) | apply + assert vs LocalStack | ⏳ |
+| 4 | Terragrunt (VPC + SG + TGW + EC2 modules) | run --all apply + assert vs LocalStack | ✅ |
 | 5 | OpenTelemetry instrumentation | pytest in-memory exporter | ⏳ |
 | 6 | Prometheus metrics endpoint | pytest exposition format | ⏳ |
 | 7 | Wire frontend cards → example links | `npm run build` | ⏳ |
@@ -75,6 +75,24 @@ fast and deterministic:
 
 Run them with `make test-limit-order-book`, `make test-ohlcv-aggregator`,
 `make test-position-pnl` (no services needed).
+
+## Terragrunt on LocalStack
+
+The old single file Terraform example was replaced by a Terragrunt stack that
+reuses the most widely used registry modules, all applied against LocalStack:
+
+- **examples/terragrunt-localstack** — a root config shares one LocalStack wired
+  AWS provider, and four units composed through `dependency` blocks: a VPC
+  (`terraform-aws-modules/vpc`), a security group
+  (`terraform-aws-modules/security-group`), a transit gateway
+  (`terraform-aws-modules/transit-gateway`, RAM sharing off since it is Pro
+  only), and EC2 nodes via a local `modules/nodes` wrapper around
+  `terraform-aws-modules/ec2-instance`. `terragrunt run --all apply` brings it up
+  and 8 tests assert every piece with boto3. The EC2 unit pins the AWS provider
+  to 5.x (provider 6 dropped arguments the ec2-instance module still uses).
+
+Needs `terragrunt` and `terraform` on the PATH and `make up` (LocalStack now has
+`ec2` enabled). Run it with `make test-terragrunt-localstack`.
 
 ## Tools shown without an example
 
