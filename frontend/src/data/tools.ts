@@ -73,13 +73,31 @@ export const softwareCategories: Category[] = [
   {
     id: 'software-engineering',
     title: 'Software Engineering',
-    blurb: 'Software engineering examples deployed and running in kubernetes.',
+    blurb: 'The trading systems I build, from the matching engine to market data and P&L. Each one is a real example with a test suite behind it.',
     tools: [
       {
         name: 'Hyperliquid Markets Crawler',
-        note: 'I crawl the live Hyperliquid markets into Postgres. It keeps the latest state with idempotent upserts and a snapshot history that only ever grows. 20 tests, one of which hits the real API.',
+        note: 'I crawl the live Hyperliquid markets into Postgres. It keeps the latest state with idempotent upserts and a snapshot history that only ever grows. One of the tests hits the real API.',
         proficiency: 5,
         example: { path: 'examples/hyperliquid-crawler', label: 'Python and Postgres' },
+      },
+      {
+        name: 'Limit Order Book',
+        note: 'A continuous matching engine with price and time priority. Limit and market orders, partial fills, cancels, and trades that print at the resting price. The kind of core I have built on the exchange side.',
+        proficiency: 5,
+        example: { path: 'examples/limit-order-book', label: 'price and time priority matching' },
+      },
+      {
+        name: 'OHLCV Candle Aggregator',
+        note: 'I resample a raw trade stream into fixed interval candles with a volume weighted average price. This is the heart of the market data platform I run, turning ticks into bars.',
+        proficiency: 5,
+        example: { path: 'examples/ohlcv-aggregator', label: 'ticks into OHLCV bars with VWAP' },
+      },
+      {
+        name: 'Position and P&L Engine',
+        note: 'From a stream of fills I track the net position, the weighted average entry, and realized and unrealized P&L, including a clean flip from long to short. The accounting a trading desk relies on.',
+        proficiency: 5,
+        example: { path: 'examples/position-pnl', label: 'weighted average cost and mark to market' },
       },
     ],
   },

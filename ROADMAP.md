@@ -58,6 +58,24 @@ Added later, validated on a local minikube cluster (profile `oss`):
 Run them with `make minikube-up` then `make test-kubernetes-minikube` /
 `make test-grafana-prometheus-minikube`.
 
+## Trading systems (pure Python, no services)
+
+Software engineering examples that model the core of a trading stack. They run on
+the standard library alone, so they need no docker or minikube and their tests are
+fast and deterministic:
+
+- **examples/limit-order-book** — a continuous matching engine with price and
+  time priority: limit and market orders, partial fills, cancels, and trades that
+  print at the resting price. 12 tests.
+- **examples/ohlcv-aggregator** — resamples a raw trade stream into fixed interval
+  OHLCV candles with a volume weighted average price. 12 tests.
+- **examples/position-pnl** — tracks net position, weighted average entry, and
+  realized and unrealized P&L from a stream of fills, including a long to short
+  flip. 18 tests.
+
+Run them with `make test-limit-order-book`, `make test-ohlcv-aggregator`,
+`make test-position-pnl` (no services needed).
+
 ## Tools shown without an example
 
 These stay on the grid because they are part of the stack, but carry no link and

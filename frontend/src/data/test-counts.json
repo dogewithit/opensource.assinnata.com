@@ -5,9 +5,12 @@
     "examples/grafana-prometheus-minikube": 7,
     "examples/hyperliquid-crawler": 20,
     "examples/kubernetes-minikube": 4,
+    "examples/limit-order-book": 12,
+    "examples/ohlcv-aggregator": 12,
     "examples/opentelemetry-tracing": 4,
+    "examples/position-pnl": 18,
     "examples/prometheus-metrics": 3,
     "examples/terraform-localstack": 3
   },
-  "total": 46
+  "total": 88
 }
