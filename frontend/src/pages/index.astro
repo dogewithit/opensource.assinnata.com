@@ -43,8 +43,6 @@ const toolCount = infraCategories.reduce((n, c) => n + c.tools.length, 0);
         <span class="proof-stat"><strong>{EXAMPLE_COUNT}</strong> examples</span>
         <span class="proof-sep" aria-hidden="true">·</span>
         <span class="proof-stat"><strong>{TOTAL_TESTS}</strong> tests</span>
-        <span class="proof-sep" aria-hidden="true">·</span>
-        <span class="proof-stat proof-live">green on every push</span>
       </a>
       <nav class="hero-nav">
         {
@@ -188,23 +186,6 @@ const toolCount = infraCategories.reduce((n, c) => n + c.tools.length, 0);
 
   .proof-sep {
     color: rgba(204, 212, 204, 0.5);
-  }
-
-  .proof-live {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    color: var(--sage);
-    font-weight: 600;
-  }
-
-  .proof-live::before {
-    content: '';
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--sage);
-    box-shadow: 0 0 0 0 var(--sage);
   }
 
   .hero-nav {
